@@ -176,12 +176,22 @@ body {
 <body>
 <audio id="birthdaySong" src="audio/song.mp3" preload="auto"></audio>
 <audio id="voiceMsg" src="audio/voice.mp3" preload="auto"></audio>
+
+<!-- RESET SCENES ON EVERY RELOAD -->
+<script>
+// RESET SCENES ON EVERY RELOAD
+document.getElementById("loading").className = "scene active";
+document.getElementById("countdown").className = "scene hidden";
+document.getElementById("msg").className = "scene hidden";
+document.getElementById("final").className = "scene hidden";
+</script>
+
 <script>
 function autoPlayBirthdaySong(){
   const s = document.getElementById("birthdaySong");
 
   // 🎵 Set birthday song volume (0.0 to 1.0)
-  s.volume = 0.15;   // <- change this number to adjust volume
+  s.volume = 0.15;
 
   document.body.addEventListener("click",()=>{ 
     if(s.paused) s.play(); 
@@ -190,10 +200,14 @@ function autoPlayBirthdaySong(){
   s.play().catch(()=>{});
 }
 document.addEventListener("DOMContentLoaded",autoPlayBirthdaySong);
+
 function playVoiceMessage(){
- const v=document.getElementById("voiceMsg"); v.currentTime=0; v.play();
+ const v=document.getElementById("voiceMsg"); 
+ v.currentTime=0; 
+ v.play();
 }
 </script>
+
 
 
 <!-- LOADING SCREEN -->

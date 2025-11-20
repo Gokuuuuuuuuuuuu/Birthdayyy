@@ -189,7 +189,7 @@ function autoPlayBirthdaySong(){
 
   // First user click will unlock autoplay on some browsers
   document.body.addEventListener("click", () => {
-    if (s.paused) s.play().catch(()=>{});
+    
   }, { once: true });
 
   // try to play silently (may fail until gesture)

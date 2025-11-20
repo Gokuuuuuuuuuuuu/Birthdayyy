@@ -179,44 +179,42 @@ body {
 <audio id="voiceMsg" src="audio/voice.mp3" preload="auto"></audio>
 
 <script>
-/* AUTOPLAY (requires one user gesture) */
+/* AUTOPLAY FIXED — WILL NOT PLAY UNTIL FIRST CLICK */
 function autoPlayBirthdaySong(){
   const s = document.getElementById("birthdaySong");
   if(!s) return;
 
-  // background music volume
+  // Set background song volume
   s.volume = 0.15;
 
-  // play ONLY after user clicks
+  // Play ONLY after first user click
   document.body.addEventListener("click", () => {
-    if (s.paused) s.play().catch(()=>{});
+    if (s.paused) {
+      s.play().catch(()=>{});
+    }
   }, { once: true });
 }
 
-  // try to play silently (may fail until gesture)
-  s.play().catch(()=>{});
-}
 document.addEventListener("DOMContentLoaded", autoPlayBirthdaySong);
 
-/* PLAY VOICE MESSAGE: restart if clicked during playback */
+/* PLAY VOICE MESSAGE — restart if clicked again */
 function playVoiceMessage() {
   const v = document.getElementById("voiceMsg");
   const bg = document.getElementById("birthdaySong");
   if(!v) return;
 
-  // Pause background song while voice plays (optional)
+  // Pause background music while voice plays (optional)
   if (bg && !bg.paused) {
     bg.pause();
   }
 
-  // If already playing, restart from beginning; this prevents multiple overlapping plays
+  // Restart voice message if already playing
   v.pause();
   v.currentTime = 0;
-  v.volume = 1.0; // set voice volume (0.0 - 1.0)
+  v.volume = 1.0;
   v.play().catch(()=>{});
 }
 </script>
-
 
 
 

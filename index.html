@@ -445,13 +445,6 @@ setInterval(()=>{const h=document.createElement('div');h.className='heart';h.inn
 // modal helpers
 function showModal(id){document.getElementById(id).style.display='flex'}
 function hideModal(id){document.getElementById(id).style.display='none'}
-function playVoiceMessage() {
-  const v = document.getElementById("voiceMsg");
-
-  v.pause();         // stop if already playing
-  v.currentTime = 0; // rewind to beginning
-  v.play();          // play from start
-}
 function openFeature(name){
   // small visual feedback for features
   const seq = document.getElementById('sequence');

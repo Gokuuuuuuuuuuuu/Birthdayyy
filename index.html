@@ -179,42 +179,44 @@ body {
 <audio id="voiceMsg" src="audio/voice.mp3" preload="auto"></audio>
 
 <script>
-/* AUTOPLAY FIXED — WILL NOT PLAY UNTIL FIRST CLICK */
-function autoPlayBirthdaySong(){
+// PLAY SONG ONLY ON FINAL PAGE
+function startBirthdaySong() {
   const s = document.getElementById("birthdaySong");
-  if(!s) return;
+  if (!s) return;
 
-  // Set background song volume
-  s.volume = 0.15;
+  s.volume = 0.18;
+  s.currentTime = 0;
 
-  // Play ONLY after first user click
-  document.body.addEventListener("click", () => {
-    if (s.paused) {
+  // play only when clicking the Continue button (to-final)
+  const btn = document.getElementById("to-final");
+  btn.addEventListener("click", () => {
+    setTimeout(() => {
       s.play().catch(()=>{});
-    }
+    }, 800); // wait until final screen loads
   }, { once: true });
 }
 
-document.addEventListener("DOMContentLoaded", autoPlayBirthdaySong);
+// call function
+document.addEventListener("DOMContentLoaded", startBirthdaySong);
 
-/* PLAY VOICE MESSAGE — restart if clicked again */
+
+// PLAY VOICE MESSAGE (works same as before)
 function playVoiceMessage() {
   const v = document.getElementById("voiceMsg");
   const bg = document.getElementById("birthdaySong");
   if(!v) return;
 
-  // Pause background music while voice plays (optional)
   if (bg && !bg.paused) {
     bg.pause();
   }
 
-  // Restart voice message if already playing
   v.pause();
   v.currentTime = 0;
   v.volume = 1.0;
   v.play().catch(()=>{});
 }
 </script>
+
 
 
 

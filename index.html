@@ -180,10 +180,12 @@ body {
 <!-- RESET SCENES ON EVERY RELOAD -->
 <script>
 // RESET SCENES ON EVERY RELOAD
-document.getElementById("loading").className = "scene active";
-document.getElementById("countdown").className = "scene hidden";
-document.getElementById("msg").className = "scene hidden";
-document.getElementById("final").className = "scene hidden";
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("loading").className = "scene active";
+  document.getElementById("countdown").className = "scene hidden";
+  document.getElementById("msg").className = "scene hidden";
+  document.getElementById("final").className = "scene hidden";
+});
 </script>
 
 <script>

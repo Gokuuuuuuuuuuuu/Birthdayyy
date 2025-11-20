@@ -212,7 +212,7 @@ function playVoiceMessage() {
 
   v.pause();
   v.currentTime = 0;
-  v.volume = 0.25;
+  v.volume = 0.20;
   v.play().catch(()=>{});
 }
 </script>
@@ -336,7 +336,7 @@ function switchScene(from, to) {
 
 // loading -> countdown after 3s
 // countdown timer
-const target = new Date('November 21, 2025 00:00:00').getTime();
+const target = new Date('December 09, 2025 00:00:00').getTime();
 // SMART loading → countdown or message
 setTimeout(() => {
     const now = Date.now();

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday — Geluuu</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Kalam:wght@300;400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #fdeff4;
+  --card: #ffffff;
+  --pink: #ff5fa2;
+  --pink-dark: #e34174;
+  --purple: #8c6daf;
+  --shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  --font-main: 'Kalam', cursive;
+  --font-script: 'Dancing Script', cursive;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: #ffb9d9; /* brighter cute pink */ /* stronger cute pink */ /* softer pink */
+  overflow: hidden;
+}
+.scene {
+  position: absolute;
+  inset: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity .5s, transform .5s;
+}
+.hidden { opacity:0; pointer-events:none; transform: translateY(100vh); }
+.active { opacity:1; transform:none; }
+.card {
+  background: var(--card);
+  padding: 36px;
+  border-radius: 26px;
+  box-shadow: var(--shadow);
+  width: 92%;
+  max-width: 560px;
+  text-align: center;
+}
+/* Loading wave emojis */
+.loading-emojis span { display:inline-block; animation: wave 2.2s ease-in-out infinite; }
+@keyframes wave { 0%{transform:translateY(0);}25%{transform:translateY(-8px);}50%{transform:translateY(0);}75%{transform:translateY(8px);}100%{transform:translateY(0);} }
+/* COUNTDOWN STYLED LIKE SCREENSHOT */
+.count-title {
+  font-size: 2rem;
+  color: var(--pink-dark);
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+.timer-wrap {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+}
+.time-box {
+  background:#fff;
+  border-radius:18px;
+  padding:16px 10px;
+  flex:1;
+  border:2px solid #ffd7ea;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+.time-box span {
+  display:block;
+  font-size:1.8rem;
+  font-weight:700;
+  color:var(--purple);
+}
+.time-box small { font-size:.8rem; color:var(--purple); opacity:.8; }
+.time-icon { font-size:1.2rem; margin-top:4px; }
+.bubble-msg {
+  background:#ffe7f3;
+  padding:16px;
+  border-radius:18px;
+  margin-top:22px;
+  font-size:1rem;
+  color:var(--pink-dark);
+  box-shadow:0 6px 14px rgba(0,0,0,.05);
+}
+.dot-row { margin-top:10px; }
+.dot-row span { display:inline-block; width:10px; height:10px; margin:0 4px; background:#ff9ac7; border-radius:50%; opacity:.6; }
+.cta-btn {
+  margin-top:28px;
+  background:linear-gradient(90deg,#ff77c9,#a162f7);
+  color:#fff;
+  padding:14px 32px;
+  border:none;
+  border-radius:30px;
+  font-size:1.1rem;
+  cursor:pointer;
+  box-shadow:0 10px 18px rgba(0,0,0,0.12);
+}
+/* MESSAGE SCREEN */
+.msg-title { color:var(--pink-dark); font-size:2rem; }
+/* FINAL SCREEN */
+.final-title {
+  font-size:2.5rem;
+  font-weight:700;
+  color:var(--pink-dark);
+  animation: pulse 2s infinite;
+  margin-bottom:12px;
+}
+@keyframes pulse { 0%{transform:scale(1);}50%{transform:scale(1.08);}100%{transform:scale(1);} }
+/* Flip card */
+.flip-card { width:78%; margin:20px auto; perspective:1000px; }
+.flip-inner { position:relative; width:100%; height:140px; transform-style:preserve-3d; transition:transform .8s; }
+.flip-front, .flip-back {
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  border-radius:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  padding:20px;
+  font-size:1.1rem;
+}
+.flip-front { background:linear-gradient(135deg,#ff6b8b,#a4508b); color:white; }
+.flip-back { background:#ffe3f6; color:var(--pink-dark); transform:rotateY(180deg); font-family:var(--font-script); }
+.flip-inner.flip { transform:rotateY(180deg); }
+/* FEATURE BUTTONS */
+.features { display:flex; gap:12px; margin-top:24px; justify-content:center; }
+.features button {
+  background:#ffe5f2;
+  border:none;
+  padding:8px 14px;
+  border-radius:14px;
+  font-size:1rem;
+  color:var(--pink-dark);
+  cursor:pointer;
+}
+/* MODALS */
+.modal { position:fixed; inset:0; background:rgba(255, 200, 220, 0.94); display:none; justify-content:center; align-items:center; z-index:99999; }
+.modal-content { background:white; padding:26px; border-radius:20px; width:92%; max-width:600px; box-shadow:var(--shadow); }
+.close { position:absolute; right:20px; top:16px; font-size:1.5rem; cursor:pointer; }
+.gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.gallery-item {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* square boxes */
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.gallery-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+/* HEART FLOAT */
+.heart { position: fixed; font-size: 1.8rem; animation: heartFloat 5s linear forwards; pointer-events: none; bottom: -20px; }
+@keyframes heartFloat { 0%{transform:translateY(0) scale(1);opacity:1;}100%{transform:translateY(-120vh) scale(1.4);opacity:0;} }
+/* PETAL FALL */
+.petal { position: fixed; font-size: 1.8rem; animation: petalFall 6s linear forwards; pointer-events:none; top:-20px; }
+@keyframes petalFall { 0%{transform:translateY(0) rotate(0);opacity:1;}100%{transform:translateY(120vh) rotate(260deg);opacity:0;} }
+/* BUTTERFLY */
+.butterfly { position:fixed; font-size:2rem; animation:butterflyMove 7s ease-in-out forwards; pointer-events:none; bottom:-20px; }
+@keyframes butterflyMove {0%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,-50vh) scale(1.1);}100%{transform:translate(-40px,-120vh) scale(1.2);opacity:0;}}
+/* CONFETTI */
+.confetti { position:fixed; width:14px; height:14px; border-radius:50%; animation:confettiUp 2.2s linear forwards; pointer-events:none; bottom:-10px; }
+@keyframes confettiUp {0%{transform:translate(0,0);opacity:1;}100%{transform:translate(var(--tx),var(--ty));opacity:0;}}
+@keyframes glowText {0%{text-shadow:0 0 4px #ff5fa2;}50%{text-shadow:0 0 14px #ff9ac7;}100%{text-shadow:0 0 4px #ff5fa2;}}
+@keyframes heartDrop {0%{transform:translateY(-10px);opacity:1;}100%{transform:translateY(60px);opacity:0;}}
+</style>
+</head>
+<body>
+<audio id="birthdaySong" src="audio/song.mp3" preload="auto"></audio>
+<audio id="voiceMsg" src="audio/voice.mp3" preload="auto"></audio>
+<script>
+function autoPlayBirthdaySong(){
+  const s = document.getElementById("birthdaySong");
+
+  // 🎵 Set birthday song volume (0.0 to 1.0)
+  s.volume = 0.15;   // <- change this number to adjust volume
+
+  document.body.addEventListener("click",()=>{ 
+    if(s.paused) s.play(); 
+  }, {once:true});
+
+  s.play().catch(()=>{});
+}
+document.addEventListener("DOMContentLoaded",autoPlayBirthdaySong);
+function playVoiceMessage(){
+ const v=document.getElementById("voiceMsg"); v.currentTime=0; v.play();
+}
+</script>
+
+
+<!-- LOADING SCREEN -->
+<div id="loading" class="scene active">
+  <div class="card">
+    <div class="loading-hearts" style="font-size:2.6rem;">💗 💗 💜</div>
+    <p class="loading-text" style="color:var(--pink-dark); font-size:1.3rem;">Loading something special...</p>
+    <div class="loading-emojis"><span>🎂</span><span>✨</span><span>🎁</span><span>❤️</span><span>🎈</span></div>
+  </div>
+</div>
+
+<!-- COUNTDOWN SCREEN -->
+<div id="countdown" class="scene hidden">
+  <div class="card">
+    <div class="count-title">Your Special Day is Almost Here💕</div>
+
+    <div class="timer-wrap">
+      <div class="time-box"><span id="d">00</span><small>Days</small><div class="time-icon">❤️</div></div>
+      <div class="time-box"><span id="h">00</span><small>Hours</small><div class="time-icon">🎁</div></div>
+      <div class="time-box"><span id="m">00</span><small>Minutes</small><div class="time-icon">🎂</div></div>
+      <div class="time-box"><span id="s">00</span><small>Seconds</small><div class="time-icon">⭐</div></div>
+    </div>
+
+    <div class="bubble-msg">Just a little more... I hope this brings you the same happiness you give me ❤️</div>
+    
+
+  </div>
+</div>
+
+<!-- MESSAGE SCREEN -->
+<div id="msg" class="scene hidden">
+  <div class="card">
+    <div class="msg-title">Your special day is here ❤️</div>
+    <p style="margin-top:12px">It’s time… to unwrap a piece of my heart ❤️</p>
+    <button id="to-final" class="cta-btn">Continue ❤️</button>
+  </div>
+</div>
+
+<!-- FINAL SCREEN -->
+<div id="final" class="scene hidden">
+  <div class="card">
+    <div class="final-title">Happy Birthday GELUUU! 🎂 ⭐ 💖</div>
+
+    <!-- FLIP CARD -->
+    <div class="flip-card" id="flip-card">
+      <div class="flip-inner" id="flip-inner">
+        <div class="flip-front">
+          <div>Tap to open your card</div>
+          <div style="font-size:2.4rem;margin-top:10px;">🎀</div>
+        </div>
+        <div class="flip-back" id="flip-back-msg" style="font-family: var(--font-script); font-size:1.6rem; animation: glowText 2s ease-in-out infinite;">You're my favorite person 💖</div>
+      </div>
+    </div>
+
+    <div id="main-content" style="display:none;">
+      <p class="final-message" style="margin-top:14px">May every wish you make today come true. You deserve the world, and I'll always be here to remind you of that.</p>
+      <p class="stay-together" style="margin-top:8px">Let's always stay like this... together, forever 🥰😘</p>
+
+      <div class="features">
+<button onclick="showModal('letter-modal')">💌 Letter</button>
+<button onclick="showModal('gallery-modal')">📸 Memories</button>
+<button onclick="playVoiceMessage()">🔊 Voice</button>
+</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="letter-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideModal('letter-modal')">×</span>
+    
+    <p style="font-family:var(--font-script);font-size:1.15rem;color:var(--pink-dark)">My dearest Geluuu,<br><br>Today is your special day, but honestly… every day feels special when you’re in it. I don’t know how to put it into perfect words, but you’ve become a place where my heart feels calm and happy. You are softness, warmth, and comfort all in one.<br><br>I hope this birthday brings you everything you dream about and everything you deserve.<br><br>I love you right up to the moon and back.<br><br>Thank you for being you. And thank you for letting me be a small part of your world.<br><br>Forever yours,<br>Tejas ❤️</p>
+  </div>
+</div>
+
+<div id="gallery-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideModal('gallery-modal')">×</span>
+    <h3 style="color:var(--pink-dark)">Memories</h3>
+    <div class="gallery-grid" id="gallery-grid">
+      <div class="gallery-item"><img src="gallery/img3.jpg" alt="1"></div>
+      <div class="gallery-item"><img src="gallery/img7.jpg" alt="2"></div>
+      <div class="gallery-item"><img src="gallery/img5.jpg" alt="3"></div>
+      <div class="gallery-item"><img src="gallery/img7.jpg" alt="4"></div>
+      <div class="gallery-item"><img src="gallery/img1.jpg" alt="5"></div>
+      <div class="gallery-item"><img src="gallery/img7.jpg" alt="6"></div>
+      <div class="gallery-item"><img src="gallery/img3.jpg" alt="7"></div>
+      <div class="gallery-item"><img src="gallery/img6.jpg" alt="8"></div>
+      <div class="gallery-item"><img src="gallery/img5.jpg" alt="9"></div>
+    </div>
+  </div>
+</div>
+
+<!-- small helper area -->
+<div id="sequence" style="position:fixed;left:50%;top:22%;transform:translateX(-50%);pointer-events:none;z-index:9999"></div>
+
+<script>
+// Basic scene elements
+const loading = document.getElementById('loading');
+const countdown = document.getElementById('countdown');
+const msg = document.getElementById('msg');
+const final = document.getElementById('final');
+const toFinal = document.getElementById('to-final');
+const flipInner = document.getElementById('flip-inner');
+const flipBackMsg = document.getElementById('flip-back-msg');
+
+function switchScene(from, to) {
+  from.classList.remove('active');
+  from.classList.add('hidden');
+  setTimeout(()=>{
+    document.querySelectorAll('.scene').forEach(s=>s.style.zIndex = s===to?1:0);
+    to.classList.remove('hidden'); to.classList.add('active');
+  },520);
+}
+
+// loading -> countdown after 3s
+// countdown timer
+const target = new Date('November 09, 2025 00:00:00').getTime();
+// SMART loading → countdown or message
+setTimeout(() => {
+    const now = Date.now();
+    const d = target - now;
+
+    if (d > 0) {
+        // Future date → show countdown
+        switchScene(loading, countdown);
+    } else {
+        // Past date → skip countdown, go straight to message
+        switchScene(loading, msg);
+        clearInterval(timerInterval); // stop countdown updates
+    }
+}, 3000);
+
+// countdown timer
+const timerInterval = setInterval(() => {
+    const now = Date.now();
+    const d = target - now;
+
+    const days = Math.max(0, Math.floor(d / 86400000));
+    const hrs = Math.max(0, Math.floor((d % 86400000) / 3600000));
+    const mins = Math.max(0, Math.floor((d % 3600000) / 60000));
+    const secs = Math.max(0, Math.floor((d % 60000) / 1000));
+
+    if (document.getElementById('d')) {
+        document.getElementById('d').innerText = String(days).padStart(2, '0');
+        document.getElementById('h').innerText = String(hrs).padStart(2, '0');
+        document.getElementById('m').innerText = String(mins).padStart(2, '0');
+        document.getElementById('s').innerText = String(secs).padStart(2, '0');
+    }
+
+    // Auto move to next page
+    if (d <= 0) {
+        clearInterval(timerInterval);
+
+        document.getElementById('d').innerText = "00";
+        document.getElementById('h').innerText = "00";
+        document.getElementById('m').innerText = "00";
+        document.getElementById('s').innerText = "00";
+
+        if (countdown.classList.contains('active')) {
+            setTimeout(() => switchScene(countdown, msg), 800);
+        }
+    }
+}, 1000);
+
+
+
+// allow manual navigation
+toFinal.addEventListener('click', ()=>{
+  // party popper burst
+  const cx = window.innerWidth/2, cy = window.innerHeight/2;
+  for(let i=0;i<60;i++){const p=document.createElement('div');p.className='confetti';p.style.left=cx+'px';p.style.top=cy+'px';const ang=Math.random()*Math.PI*2;const dist=Math.random()*260+40;p.style.setProperty('--tx',(Math.cos(ang)*dist)+'px');p.style.setProperty('--ty',(Math.sin(ang)*dist)+'px');p.style.backgroundColor=['#ff9fcf','#ffd57a','#9be6ff','#caa3ff','#fff9c4'][Math.floor(Math.random()*5)];document.body.appendChild(p);setTimeout(()=>p.remove(),2200);} 
+  /* explosion removed */
+  // sequence
+  const seq = document.getElementById('sequence'); seq.innerText='🎂'; seq.style.opacity=1; setTimeout(()=>seq.innerText='🌟',500); setTimeout(()=>seq.innerText='💖',900); setTimeout(()=>seq.innerText='',1400);
+  setTimeout(()=> switchScene(msg, final),700);
+});
+
+// flip card behavior
+let flipped=false;
+const flipCard = document.getElementById('flip-card');
+flipCard.addEventListener('click', ()=>{
+  if(!flipped){
+    flipInner.classList.add('flip');
+    flipBackMsg.innerText = 'Forever & ever 💖';
+    for(let i=0;i<20;i++){
+      const h=document.createElement('div');
+      h.innerText='💗';
+      h.style.position='fixed';
+      h.style.left=(window.innerWidth/2 + (Math.random()*120-60))+'px';
+      h.style.top='50%';
+      h.style.fontSize='1.8rem';
+      h.style.animation='heartDrop 1.4s linear forwards';
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),1500);
+    }
+    setTimeout(()=>{
+      const reveal=document.getElementById('main-content');
+      if(reveal){reveal.style.display='block';reveal.style.opacity=0;setTimeout(()=>reveal.style.opacity=1,40);} 
+      flipCard.style.display='none';
+    },850);
+    flipped=true;
+  } else {
+    flipInner.classList.remove('flip');
+    flipped=false;
+  }
+});
+
+// final effects (petals, butterflies, soft dust)
+function startFinalEffects(){
+  // petals
+  const petInt = setInterval(()=>{const p=document.createElement('div');p.className='petal';p.innerText='🌸';p.style.left=Math.random()*95+'%';document.body.appendChild(p);setTimeout(()=>p.remove(),6000);},420);
+  const bfInt = setInterval(()=>{const b=document.createElement('div');b.className='butterfly';b.innerText='🦋';b.style.left=Math.random()*95+'%';document.body.appendChild(b);setTimeout(()=>b.remove(),8000);},1200);
+  const dInt = setInterval(()=>{const d=document.createElement('div');d.className='confetti';d.innerText='✨';d.style.left=Math.random()*95+'%';d.style.setProperty('--tx','0px');d.style.setProperty('--ty','-120px');document.body.appendChild(d);setTimeout(()=>d.remove(),2500);},700);
+  window._finalIntervals = [petInt,bfInt,dInt];
+}
+
+// observe final activation to start effects
+const observer = new MutationObserver((mut)=>{mut.forEach(m=>{if(m.target.classList && m.target.classList.contains('active') && m.target.id==='final'){startFinalEffects();}})});
+document.querySelectorAll('.scene').forEach(s=>observer.observe(s,{attributes:true,attributeFilter:['class']}));
+
+// floating hearts always
+setInterval(()=>{const h=document.createElement('div');h.className='heart';h.innerText='💗';h.style.left=Math.random()*95+'%';document.body.appendChild(h);setTimeout(()=>h.remove(),5000);},900);
+
+// modal helpers
+function showModal(id){document.getElementById(id).style.display='flex'}
+function hideModal(id){document.getElementById(id).style.display='none'}
+function playVoiceMessage() {
+  const v = document.getElementById("voiceMsg");
+
+  v.pause();         // stop if already playing
+  v.currentTime = 0; // rewind to beginning
+  v.play();          // play from start
+}
+function openFeature(name){
+  // small visual feedback for features
+  const seq = document.getElementById('sequence');
+  if(name==='heart') seq.innerText='💖';
+  if(name==='star') seq.innerText='🌟';
+  if(name==='cake') seq.innerText='🎂';
+  setTimeout(()=>seq.innerText='',900);
+}
+</script>
+</body>
+</html>

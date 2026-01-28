@@ -1,4 +1,4 @@
-# 🎉 Baby Birthday Wish Website
+# 🎉 Birthday Wish Website
 
 This project is a customizable birthday wish website.  
 Users can personalize it by adding their own **voice recording** and **gallery images**.

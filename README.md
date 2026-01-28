@@ -108,4 +108,15 @@ Correct:
 
 This project is created to make birthday wishes more special and personal.
 
+
+📄 License
+This project is intended for personal and educational use.
+You are free to modify and reuse it for non-commercial purposes.
+
+🙌 Acknowledgements
+Inspired by modern animated landing pages and Valentine-themed interactive designs.
+
+📬 Contact
+If you have suggestions or improvements, feel free to open an issue or submit a pull request.
+
 >Gokuuuuuuuuuuuu

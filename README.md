@@ -89,8 +89,9 @@ Correct:
 - Do not rename folders: `audio` and `gallery`
 - Do not rename `index.html`
 - Audio file must be named `voice`
-- Images must be named `img`
+- Images must be named like `img1,img2,etc`
 - Wrong file names will cause media not to load
+- search for **const target = new Date('February 23, 2026 00:00:00').getTime();** in **Index.html** file and change the date to the birthday date and commit changes
 
 ---
 
